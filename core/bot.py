@@ -201,14 +201,13 @@ class bot():
         return {'status': status,'errors': '\n'.join(errors)}
 
     def add_commands(self,commandName='dth'):
-        @commands.before_invoke
+        @self.bot.before_invoke
         async def resetCooldown(ctx):
             # enable cooldown resets for staff members
 
             if(self.config['enable-reset-cooldowns']):
                 staff = self.staffList()
                 userInfo = user(ctx)
-
                 if(str(userInfo.getUserId()) in staff['admin']):
                     return ctx.command.reset_cooldown(ctx)
 
