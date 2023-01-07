@@ -1,0 +1,13 @@
+{
+  "config": {
+    "bot-command-prefix": "/",
+    "bot-name": "dth-labs-discord",
+    "bot-token": "MTA2MDQ0MjQzMjkxNjk0Njk4Ng.Gb3AoR.K3x5ldgbD92GmQAK25YhnuFcAVcGr9FU03BD-0-1",
+    "bot-listens-to": "/dth help",
+    "bot-description": "Run /dth help for full list of commands",
+    "enable-reset-cooldowns": true,
+    "enable-cooldowns": true,
+    "cooldown-duration": 15,
+    "enable-global-errors" : false
+  }
+}

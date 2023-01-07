@@ -1,0 +1,6 @@
+{
+  "discord-bot-token": "",
+  "discord-logs-channel" : "",
+  "discord-broadcast-channels" : [],
+  "safe-discord-ids" : []
+}
