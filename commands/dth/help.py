@@ -4,4 +4,4 @@ class help:
         self.args = args
 
     def main(self):
-        print('help')
+        await self.ctx.channel.send("```This is the help.py command output within commands/dth folder.")

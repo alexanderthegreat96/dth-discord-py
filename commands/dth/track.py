@@ -4,4 +4,4 @@ class track:
         self.args = args
 
     def main(self):
-        print('track')
+        await self.ctx.channel.send("```This is the track.py command output within commands/dth folder.")

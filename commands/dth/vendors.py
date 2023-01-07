@@ -6,5 +6,4 @@ class vendors:
         self.inputArguments = inputArguments
 
     def main(self):
-        print('hello')
-        return "this is the vendors file. you are searching for : "
+        await self.ctx.channel.send("```This is the vendors.py command output within commands/dth folder.")

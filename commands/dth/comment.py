@@ -6,4 +6,4 @@ class comment:
         self.inputArguments = inputArguments
 
     def main(self):
-        return ("This is the username: ")
+        await self.ctx.channel.send("```This is the comment.py command output within commands/dth folder.")

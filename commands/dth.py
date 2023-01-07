@@ -7,5 +7,5 @@ class dth:
 
 
     def main(self):
-        return 'Hello,this is the dth command'
+        await self.ctx.channel.send("```This is the dth.py command output within commands folder.")
 

@@ -7,5 +7,5 @@ class alpha:
 
 
     def main(self):
-        return 'Hello,this is the alpha command'
+        await self.ctx.channel.send("```This is the alpha.py command output within commands folder.")
 

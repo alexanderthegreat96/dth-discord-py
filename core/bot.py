@@ -274,10 +274,10 @@ class bot():
                                         commandContents = self.path_import('commands/' + thisCommand + '.py')
                                         className = getattr(commandContents, thisCommand)
                                         run = className(ctx, args,authorization,inputArguments)
-                                        output = run.main()
+                                        run.main()
                                     else:
-                                        output = check['errors']
-                                    await ctx.channel.send("```" + output + "```")
+                                        await ctx.channel.send("```" + check['errors'] + "```")
+
                                 else:
                                     if (authorization is not None):
                                         authorizedGroups = ','.join(authorization)
@@ -318,15 +318,14 @@ class bot():
                                                                 'commands/' + thisCommand + '/' + arg1 + '.py')
                                                             className = getattr(commandContents, arg1)
                                                             run = className(ctx, args, authorization, inputArguments)
-                                                            output = run.main()
+                                                            run.main()
                                                         else:
-                                                            output = check['errors']
+                                                            await ctx.channel.send("```" + check['errors'] + "```")
                                                     else:
                                                         commandContents = self.path_import('commands/' + thisCommand + '/' + arg1 + '.py')
                                                         className = getattr(commandContents, arg1)
                                                         run = className(ctx, args, authorization, inputArguments)
-                                                        output = run.main()
-                                                    await ctx.channel.send('```' + output + '```')
+                                                        run.main()
                                                 else:
                                                     if(authorization is not None):
                                                         authorizedGroups = ','.join(authorization)
