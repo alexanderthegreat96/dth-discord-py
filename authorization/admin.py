@@ -19,6 +19,9 @@ class admin:
 
     def main(self):
         staffList = self.staffList()
+
+        print('here')
+
         if (str(self.user_id) in staffList['admin']):
             return True
         return False

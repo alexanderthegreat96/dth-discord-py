@@ -6,6 +6,6 @@ class alpha:
         self.arguments = arguments
 
 
-    def main(self):
-        await self.ctx.channel.send("```This is the alpha.py command output within commands folder.")
+    async def main(self):
+        await self.ctx.channel.send("```This is the alpha.py command output within commands folder.```")
 

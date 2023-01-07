@@ -5,5 +5,5 @@ class comment:
         self.args = args
         self.inputArguments = inputArguments
 
-    def main(self):
-        await self.ctx.channel.send("```This is the comment.py command output within commands/dth folder.")
+    async def main(self):
+        await self.ctx.channel.send("```This is the comment.py command output within commands/dth folder.```")

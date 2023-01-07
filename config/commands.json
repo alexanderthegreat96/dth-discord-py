@@ -2,7 +2,6 @@
   "commands": {
     "dth": {
       "authorization": [],
-      "arguments": [],
       "commands": {
         "help": {
           "authorization": [],
@@ -61,11 +60,10 @@
       }
     },
     "alpha": {
-      "authorization": [
-        "admin",
-        "root"
-      ],
-      "arguments": []
+      "arguments": {
+        "search": {"required": true},
+        "view": {"required": false}
+      }
     }
   }
 }

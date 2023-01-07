@@ -6,6 +6,6 @@ class dth:
         self.arguments = arguments
 
 
-    def main(self):
-        await self.ctx.channel.send("```This is the dth.py command output within commands folder.")
+    async def main(self):
+        await self.ctx.channel.send("```This is the dth.py command output within commands folder.```")
 

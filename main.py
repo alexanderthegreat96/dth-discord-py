@@ -8,6 +8,7 @@ __name__ = "dth-labs-discord"
 from core.bot import bot
 
 system = bot()
-system.add_commands()
+system.add_commands('dth')
+system.add_commands('alpha')
 system.boot()
 
