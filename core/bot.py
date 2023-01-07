@@ -263,13 +263,13 @@ class bot():
                         if(checkBan):
                             await ctx.channel.send("```You have been banned from using any commands. If you think this is unfair, please contact the staff.```")
                         else:
-                            # if ('authorization' in command_list[item] and command_list[item][
-                            #     'authorization'] is not None):
-                            #     authorization = command_list[item]['authorization']
-                            # else:
-                            #     authorization = None
-                            #
-                            # authorize = self.authorize(ctx,authorization)
+                            if ('authorization' in command_list[item] and command_list[item][
+                                'authorization'] is not None):
+                                authorization = command_list[item]['authorization']
+                            else:
+                                authorization = None
+
+                            authorize = self.authorize(ctx,authorization)
 
                             authorize = True
                             authorization = []
@@ -333,7 +333,13 @@ class bot():
                                                 else:
                                                     commandContents = self.path_import('commands/' + thisCommand + '/' + arg1 + '.py')
                                                     className = getattr(commandContents, arg1)
-                                                    run = className(ctx, args, authorization, inputArguments)
+
+                                                    if(args):
+                                                        sendInput = {arg1:args[0]}
+                                                    else:
+                                                        sendInput = {arg1:None}
+
+                                                    run = className(ctx, args, authorization, sendInput)
                                                     await run.main()
                                             else:
                                                 if(authorization is not None):
