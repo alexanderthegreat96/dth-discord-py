@@ -279,7 +279,7 @@ class bot():
                                 if(check['status']):
                                     commandContents = self.path_import('commands/' + thisCommand + '.py')
                                     className = getattr(commandContents, thisCommand)
-                                    run = className(ctx, args,authorization,inputArguments)
+                                    run = className(self.bot, ctx, args,authorization,inputArguments)
                                     await run.main()
                                 else:
                                     await ctx.channel.send("```" + check['errors'] + "```")
@@ -325,7 +325,7 @@ class bot():
                                                         commandContents = self.path_import(
                                                             'commands/' + thisCommand + '/' + arg1 + '.py')
                                                         className = getattr(commandContents, arg1)
-                                                        run = className(ctx, args, authorization, inputArguments)
+                                                        run = className(self.bot,ctx, args, authorization, inputArguments)
                                                         await run.main()
                                                     else:
                                                         await ctx.channel.send("```" + check['errors'] + "```")
@@ -338,7 +338,7 @@ class bot():
                                                     else:
                                                         sendInput = {arg1:None}
 
-                                                    run = className(ctx, args, authorization, sendInput)
+                                                    run = className(self.bot, ctx, args, authorization, sendInput)
                                                     await run.main()
                                             else:
                                                 if(authorization is not None):
@@ -355,13 +355,13 @@ class bot():
                                         await ctx.channel.send(
                                             "```The provided command has an empty array of sub items. Either fill them or remove the key entirely. Refer to [" + thisCommand + " help] for more information.```")
                                 else:
-                                    await ctx.channel.send("```No command file found at: [commands/" + thisCommand + "/" +arg1+".py]. Check the file.```")
+                                    await ctx.channel.send("```["+arg1+"] is not a valid command endpoint.```")
                             else:
 
                                 subcommands = ', '.join(command_list[thisCommand]['commands'])
                                 await ctx.channel.send("```No command line arguments specified.\n"
                                                        "This command contains a number of sub commands and at least one needs to be specified.\n"
-                                                       "Valid sub commands include:\n ["+subcommands+"]```")
+                                                       "Use: ["+self.config['bot-command-prefix']+""+thisCommand+" help]```")
 
 
 

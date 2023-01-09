@@ -1,5 +1,6 @@
 class comment:
-    def __init__(self,ctx,args,authorization,inputArguments):
+    def __init__(self, bot, ctx, args, authorization, inputArguments):
+        self.bot = bot
         self.ctx = ctx
         self.authorization = authorization
         self.args = args
