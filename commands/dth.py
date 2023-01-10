@@ -11,5 +11,5 @@ class dth:
 
 
     async def main(self):
-        await self.ctx.channel.send("```This is the dth.py command output within commands folder.```")
-
+        await self.ctx.channel.send("```This is the dth command output within commands folder.```")
+    

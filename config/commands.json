@@ -1,0 +1,20 @@
+{
+  "commands": {
+    "dth": {
+      "authorization": [],
+      "commands": {
+        "myFirstCommand": {
+          "authorization": [],
+          "arguments": {
+            "-a": {
+              "required": true,
+              "required-arguments" : [
+                "create","update","delete"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}
