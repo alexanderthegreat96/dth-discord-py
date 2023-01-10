@@ -154,11 +154,18 @@ class bot():
         status = True
         errors = []
 
+
+        showRequiredArgumentsText = False
+        showRequiredArgumentsSubcomandText = False
+
+
         if(filledArguments is not None and arrayArguments is not None):
             if(arrayArguments is not None and filledArguments):
                 if (any(item in arrayArguments for item in filledArguments)):
                     commandStatus = True
+                    count1 = 0
                     for item in filledArguments:
+                        count1 = count1 + 1
                         if (item in arrayArguments):
                             if ('required' in arrayArguments[item] and arrayArguments[item]['required'] is not None):
                                 if (filledArguments[item] is None):
@@ -166,37 +173,50 @@ class bot():
                                     if(required):
                                         status = False
                                         commandStatus = False
-                                        errors.append('Required argument [' + item + '] MUST NOT be empty.')
+                                        errors.append(str(count1)+'. Required argument [' + item + '] MUST NOT be empty.')
 
                             if (commandStatus):
                                 if ('required-arguments' in arrayArguments[item] and arrayArguments[item]['required-arguments'] is not None):
+                                    count2 = 0
                                     for req in arrayArguments[item]['required-arguments']:
+                                        count2 = count2 + 1
                                         if (req not in filledArguments):
                                             status = False
-                                            errors.append('Required argument: [' + req + '] was not provided.')
+                                            showRequiredArgumentsSubcomandText = True
+                                            errors.append(str(count2)+'. Required argument: [' + req + '] was not provided.')
                                         else:
                                             if (filledArguments[req] is None):
                                                 status = False
-                                                errors.append('Required argument: [' + req + '] must not be empty!')
+                                                errors.append(str(count2)+'. Required argument: [' + req + '] must not be empty!')
                 else:
                     status = False
                     validArgs = ', '.join(arrayArguments.keys())
                     errors.append('You failed to provide required arguments. Valid arguments include: [' + validArgs + '].')
         else:
+            count3 = 0
             for item in arrayArguments:
+                count3 = count3 + 1
                 if ('required' in arrayArguments[item] and arrayArguments[item]['required'] is not None):
                     required = arrayArguments[item]['required']
                     if(required):
                         status = False
-                        errors.append('Required argument [' + item + '] must be provided.')
+                        showRequiredArgumentsText = True
+                        errors.append(str(count3)+'. Required argument [' + item + '] not provided.')
 
 
         # else:
         #     status = False
         #     errors.append('No valid arguments were provided.')
 
+        if (showRequiredArgumentsText):
+            errors.insert(0,'One of the following arguments need to be provided:\n')
+
+        if (showRequiredArgumentsSubcomandText):
+            errors.insert(0, 'The following arguments MUST BE provided:\n')
+
+
         if(status == False):
-            errors.append('Refer to the command helper: [/'+parentCommand+' '+ subcommand +' help]')
+            errors.append('\nRefer to the command helper: [/'+parentCommand+' '+ subcommand +' help]')
 
         return {'status': status,'errors': '\n'.join(errors)}
 
