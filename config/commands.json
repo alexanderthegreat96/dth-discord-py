@@ -6,13 +6,44 @@
         "myFirstCommand": {
           "authorization": [],
           "arguments": {
-            "-a": {
+            "create": {
               "required": true,
-              "required-arguments" : [
-                "create","update","delete"
+              "hasValue": false,
+              "required-arguments": [
+                "-u",
+                "-p"
               ]
+            },
+            "update": {
+              "required": true,
+              "hasValue": false,
+              "required-arguments": [
+                "-u",
+                "-p"
+              ]
+            },
+            "delete": {
+              "required": true,
+              "hasValue": false,
+              "required-arguments": [
+                "-u"
+              ]
+            },
+            "search": {
+              "required": false,
+              "hasValue": true,
+              "required-arguments": []
             }
           }
+        }
+      }
+    },
+    "aloha": {
+      "authorization": [],
+      "arguments": {
+        "save": {
+          "required": true,
+          "hasValue": true
         }
       }
     }
