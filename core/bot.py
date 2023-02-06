@@ -108,9 +108,9 @@ class bot():
         else:
             pass
 
-    def generateArgumentAssociation(self, args, predefinedArguments={}):
+    def generateArgumentAssociation(self, args, predefinedArguments={}, mainArg=''):
         associatedArguments = {}
-        if (len(args) and predefinedArguments):
+        if (len(args) and len(predefinedArguments)):
 
             mergedArgs = []
             for item in predefinedArguments:
@@ -130,8 +130,14 @@ class bot():
                         except Exception as e:
                             associatedArguments[item] = None
 
+        else:
+            if(args):
+                associatedArguments = {mainArg: args[0]}
+            else:
+                associatedArguments = {mainArg: None}
 
         return associatedArguments
+
 
     def isBanned(self, ctx):
         userInfo = user(ctx)
@@ -156,33 +162,27 @@ class bot():
                         className = getattr(commandContents, group)
                         run = className(ctx, userInfo.getUserId())
                         output = run.main()
-                        return output
+                        if(output == True):
+                            return True
 
         else:
             status = True
         return status
 
-    def checkUserInputs(self, inputArguments, arrayArguments={}, filledArguments={}, parentCommand='', subcommand=''):
+    def checkUserInputs(self, inputArguments, arrayArguments={}, filledArguments={}, parentCommand='', subcommand='', ctx=None):
 
         status = True
         errors = []
-
-
-
         showRequiredArgumentsText = False
         showRequiredArgumentsSubcomandText = False
-
-
-
         if (filledArguments):
-            if (arrayArguments is not None and filledArguments):
+            if (len(arrayArguments)  and len(filledArguments)):
                 if (any(item in arrayArguments for item in filledArguments)):
                     commandStatus = True
                     count1 = 0
                     for item in filledArguments:
                         count1 = count1 + 1
                         if (item in arrayArguments):
-
                             if ('hasValue' in arrayArguments[item] and arrayArguments[item]['hasValue']):
                                 if (item in filledArguments):
                                     hasValue = arrayArguments[item]['hasValue']
@@ -192,6 +192,14 @@ class bot():
                                             commandStatus = False
                                             errors.append(
                                                 str(count1) + '. Argument [' + item + '] MUST NOT be empty.')
+
+                            if('authorization' in arrayArguments[item] and arrayArguments[item]['authorization'] is not None):
+                                authorize = self.authorize(ctx,arrayArguments[item]['authorization'])
+                                if(not authorize):
+                                    commandStatus = False
+                                    status = False
+                                    errors.append(
+                                        str(count1) + '. Argument [' + item + '] requires special privileges.')
 
                             if (commandStatus):
                                 if ('required-arguments' in arrayArguments[item] and arrayArguments[item][
@@ -216,25 +224,29 @@ class bot():
                         'You failed to provide required arguments. Valid arguments include: [' + validArgs + '].')
 
         else:
-            count3 = 0
-            print(arrayArguments)
-            for item in arrayArguments:
-                count3 = count3 + 1
+            if(arrayArguments is not None):
 
-                if ('required' in arrayArguments[item] and arrayArguments[item]['required'] is not None):
-                    required = arrayArguments[item]['required']
-                    if (required):
-                        status = False
-                        showRequiredArgumentsText = True
-                        errors.append(str(count3) + '. Required argument [' + item + '] not provided.')
-                    else:
+                count3 = 0
 
-                        if('hasValue' in arrayArguments[item] and arrayArguments[item]['hasValue'] is not None):
-                            hasValue = arrayArguments[item]['hasValue']
-                            if (hasValue):
-                                status = False
 
-                                errors.append(str(count3) + '. Argument [' + item + '] must not be empty.')
+                for item in arrayArguments:
+                    count3 = count3 + 1
+
+                    if ('required' in arrayArguments[item] and arrayArguments[item]['required'] is not None):
+                        required = arrayArguments[item]['required']
+                        if (required):
+                            status = False
+                            showRequiredArgumentsText = True
+                            errors.append(str(count3) + '. Required argument [' + item + '] not provided.')
+                        else:
+
+                            if('hasValue' in arrayArguments[item] and arrayArguments[item]['hasValue'] is not None):
+                                hasValue = arrayArguments[item]['hasValue']
+                                if (hasValue):
+                                    status = False
+
+                                    errors.append(str(count3) + '. Argument [' + item + '] must not be empty.')
+
 
         # else:
         #     status = False
@@ -301,9 +313,11 @@ class bot():
             counter += 1
             if (path.exists('commands/' + item + '.py')):
 
+
                 if ('arguments' in command_list[item] and command_list[item]['arguments'] is not None
                         and 'commands' not in command_list[item]):
                     arguments = command_list[item]['arguments']
+
 
                     @commands.cooldown(1, self.config['cooldown-duration'], commands.BucketType.user)
                     @self.bot.command(name=item, pass_context=True)
@@ -326,10 +340,7 @@ class bot():
 
                             if (authorize):
 
-                                inputArguments = self.generateArgumentAssociation(args,command_list[thisCommand]['arguments'])
-
-
-
+                                inputArguments = self.generateArgumentAssociation(args,command_list[thisCommand]['arguments'], commandName)
                                 check = self.checkUserInputs(args, arguments, inputArguments, thisCommand)
 
                                 if (check['status']):
@@ -366,7 +377,7 @@ class bot():
                                         subcommands = command_list[thisCommand]['commands']
                                         if (arg1 in subcommands):
                                             inputArguments = self.generateArgumentAssociation(args, subcommands[arg1][
-                                                'arguments'])
+                                                'arguments'], arg1)
 
                                             if ('authorization' in subcommands[arg1] and
                                                     subcommands[arg1]['authorization']):
@@ -379,7 +390,7 @@ class bot():
                                                 if ('arguments' in subcommands[arg1] and subcommands[arg1][
                                                     'arguments'] is not None):
                                                     check = self.checkUserInputs(args, subcommands[arg1]['arguments'],
-                                                                                 inputArguments, thisCommand, arg1)
+                                                                                 inputArguments, thisCommand, arg1,ctx)
                                                     if (check['status']):
                                                         commandContents = self.path_import(
                                                             'commands/' + thisCommand + '/' + arg1 + '.py')
